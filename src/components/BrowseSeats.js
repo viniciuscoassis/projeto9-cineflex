@@ -3,6 +3,7 @@ import axios from "axios";
 import { useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
 import Footer from "./Footer";
+import Seat from "./App/Seat";
 
 export default function BrowseSeats() {
   let { idSessao } = useParams();
@@ -19,7 +20,15 @@ export default function BrowseSeats() {
   return (
     <>
       <PickSeat>Selecione o(s) assento(s)</PickSeat>
-      <SeatsLounge></SeatsLounge>
+      <SeatsLounge>
+        {!(mainObj.length == 0)
+          ? mainObj.seats.map((seat) => (
+              <Seat key={seat.id} isDisponivel={seat.isAvailable}>
+                {seat.name}
+              </Seat>
+            ))
+          : ""}
+      </SeatsLounge>
       <ContainerExamples>
         <SeatsExample isSelected={true}>
           <div></div>
@@ -36,6 +45,7 @@ export default function BrowseSeats() {
           <h3>Indisponível</h3>
         </SeatsExample>
       </ContainerExamples>
+
       {!(mainObj.length == 0) ? (
         <Footer
           posterUrl={mainObj.movie.posterURL}
@@ -64,23 +74,6 @@ const SeatsLounge = styled.div`
   margin: 20px;
   width: 90%;
   justify-content: space-between;
-`;
-
-const Seat = styled.div`
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  background-color: ${(props) =>
-    props.isAvailable ? "#c3cfd9" : props.isSelected ? "#8DD7CF" : "#FBE192"};
-  border: 1px solid
-    ${(props) =>
-      props.isAvailable ? "#808f9d" : props.isSelected ? "#1AAE9E" : "#F7C52B"};
-  width: 26px;
-  height: 26px;
-  border-radius: 50%;
-  margin-right: 5px;
-  margin-bottom: 15px;
-  font-size: 13px;
 `;
 
 const ContainerExamples = styled.div`
