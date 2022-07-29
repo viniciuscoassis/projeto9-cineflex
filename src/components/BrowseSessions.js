@@ -10,7 +10,11 @@ function Day({ date, weekday, showtimes }) {
       <h2>{`${weekday} - ${date}`}</h2>
       <div>
         {showtimes.map((time) => (
-          <Link key={time.id} to={`/assentos/${time.id}`}>
+          <Link
+            style={{ textDecoration: "none" }}
+            key={time.id}
+            to={`/assentos/${time.id}`}
+          >
             <div>{time.name}</div>
           </Link>
         ))}
@@ -99,5 +103,10 @@ const ContainerDay = styled.div`
     color: white;
     border-radius: 3px;
     margin-right: 10px;
+  }
+
+  div div:hover {
+    cursor: pointer;
+    transform: scale(1.1);
   }
 `;
