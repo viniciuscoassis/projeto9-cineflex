@@ -1,14 +1,17 @@
 import styled from "styled-components";
 import axios from "axios";
-import { useParams } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
 import Footer from "./Footer";
 import Seat from "./App/Seat";
 
 export default function BrowseSeats() {
   let { idSessao } = useParams();
+  let navigate = useNavigate();
 
   const [mainObj, setMainObj] = useState([]);
+
+  const [form, setForm] = useState({ name: "", cpf: "" });
 
   useEffect(() => {
     let promisse = axios.get(
@@ -17,13 +20,33 @@ export default function BrowseSeats() {
     promisse.then((res) => setMainObj(res.data));
   }, []);
   console.log(mainObj);
+
+  function handleForm(e) {
+    setForm({ ...form, [e.target.name]: e.target.value });
+
+    // console.log(form);
+  }
+
+  function reserveSeats(e) {
+    e.preventDefault();
+    console.log(form);
+    // navigate("/");
+  }
+
+  // let a = mainObj.seats.isAvailable.filter((value) => value == true);
+  // console.log(a);
+
   return (
     <>
       <PickSeat>Selecione o(s) assento(s)</PickSeat>
       <SeatsLounge>
         {!(mainObj.length == 0)
           ? mainObj.seats.map((seat) => (
-              <Seat key={seat.id} isDisponivel={seat.isAvailable}>
+              <Seat
+                key={seat.id}
+                index={seat.id}
+                isDisponivel={seat.isAvailable}
+              >
                 {seat.name}
               </Seat>
             ))
@@ -45,6 +68,24 @@ export default function BrowseSeats() {
           <h3>Indisponível</h3>
         </SeatsExample>
       </ContainerExamples>
+
+      <form onSubmit={reserveSeats}>
+        <input
+          type="text"
+          name="name"
+          onChange={handleForm}
+          value={form.name}
+          required
+        />
+        <input
+          type="number"
+          name="cpf"
+          onChange={handleForm}
+          value={form.cpf}
+          required
+        />
+        <button type="submit">Reservar assento(s) </button>
+      </form>
 
       {!(mainObj.length == 0) ? (
         <Footer

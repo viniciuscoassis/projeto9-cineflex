@@ -1,14 +1,29 @@
 import { useState } from "react";
 import styled from "styled-components";
 
-export default function Seat({ children, isDisponivel }) {
+let allPicked = [];
+export default function Seat({ children, isDisponivel, index }) {
   const [isSelected, setIsSelected] = useState(false);
+
+  function handleClick(id) {
+    if (isSelected == false) {
+      allPicked.push(id);
+    }
+    if (isSelected == true) {
+      allPicked = allPicked.filter((value) => value != id);
+    }
+    if (isDisponivel == false) {
+      alert("Esse assento não está disponível");
+    }
+    setIsSelected(!isSelected);
+
+    // console.log(id);
+    // console.log(isSelected);
+  }
 
   return (
     <SeatS
-      onClick={(isDisponivel) =>
-        isDisponivel ? setIsSelected(!isSelected) : ""
-      }
+      onClick={(isDisponivel) => (isDisponivel ? handleClick(index) : "")}
       isAvailable={isDisponivel}
       isSelected={isSelected}
     >
@@ -16,10 +31,6 @@ export default function Seat({ children, isDisponivel }) {
     </SeatS>
   );
 }
-
-// #c3cfd9 -cinza
-// 8DD7CF - verde
-// FBE192  - amarelo
 
 const SeatS = styled.div`
   display: flex;
