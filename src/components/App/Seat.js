@@ -1,24 +1,24 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import styled from "styled-components";
 
-let allPicked = [];
-export default function Seat({ children, isDisponivel, index }) {
+export default function Seat({ children, isDisponivel, index, ids }) {
   const [isSelected, setIsSelected] = useState(false);
 
   function handleClick(id) {
-    if (isSelected == false) {
-      allPicked.push(id);
-    }
-    if (isSelected == true) {
-      allPicked = allPicked.filter((value) => value != id);
-    }
     if (isDisponivel == false) {
       alert("Esse assento não está disponível");
+      return;
     }
-    setIsSelected(!isSelected);
 
-    // console.log(id);
-    // console.log(isSelected);
+    if (isSelected === true) {
+      ids = ids.filter((value) => value !== id);
+      setIsSelected(false);
+    } else if (isSelected === false) {
+      ids.push(id);
+      setIsSelected(true);
+    }
+
+    console.log(ids);
   }
 
   return (

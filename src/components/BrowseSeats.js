@@ -19,7 +19,7 @@ export default function BrowseSeats() {
     );
     promisse.then((res) => setMainObj(res.data));
   }, []);
-  console.log(mainObj);
+  // console.log(mainObj);
 
   function handleForm(e) {
     setForm({ ...form, [e.target.name]: e.target.value });
@@ -30,11 +30,14 @@ export default function BrowseSeats() {
   function reserveSeats(e) {
     e.preventDefault();
     console.log(form);
-    // navigate("/");
+    form = { ...form, [ids]: ids };
+    console.log(form);
+    // navigate("/sucesso");
   }
 
   // let a = mainObj.seats.isAvailable.filter((value) => value == true);
   // console.log(a);
+  let ids = [];
 
   return (
     <>
@@ -46,6 +49,7 @@ export default function BrowseSeats() {
                 key={seat.id}
                 index={seat.id}
                 isDisponivel={seat.isAvailable}
+                ids={ids}
               >
                 {seat.name}
               </Seat>
@@ -69,23 +73,29 @@ export default function BrowseSeats() {
         </SeatsExample>
       </ContainerExamples>
 
-      <form onSubmit={reserveSeats}>
+      <Form onSubmit={reserveSeats}>
+        <label htmlFor="name">Nome do comprador:</label>
         <input
+          placeholder="Digite seu nome..."
+          id="name"
           type="text"
           name="name"
           onChange={handleForm}
           value={form.name}
           required
         />
+        <label>CPF do comprador:</label>
         <input
+          placeholder="Digite seu CPF..."
           type="number"
+          id="cpf"
           name="cpf"
           onChange={handleForm}
           value={form.cpf}
           required
         />
         <button type="submit">Reservar assento(s) </button>
-      </form>
+      </Form>
 
       {!(mainObj.length == 0) ? (
         <Footer
@@ -101,6 +111,47 @@ export default function BrowseSeats() {
   );
 }
 
+const Form = styled.form`
+  display: flex;
+  flex-direction: column;
+  margin: 0 25px;
+
+  label {
+    margin-top: 10px;
+  }
+
+  input {
+    margin-top: 5px;
+    height: 40px;
+    padding-left: 10px;
+    border: 1px solid #d4d4d4;
+    font-size: 14px;
+
+    font-weight: 400;
+  }
+  input::placeholder {
+    padding-left: 10px;
+    font-style: italic;
+  }
+  input::value {
+    padding-left: 10px;
+  }
+  button {
+    height: 40px;
+    width: 60%;
+    margin: 45px auto;
+    background-color: #e8833a;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    font-size: 15px;
+  }
+  button:hover {
+    transform: scale(1.1);
+    transition: 0.3s ease-in;
+  }
+`;
+
 const PickSeat = styled.h1`
   font-weight: 400;
   font-size: 22px;
@@ -112,7 +163,7 @@ const PickSeat = styled.h1`
 const SeatsLounge = styled.div`
   display: flex;
   flex-wrap: wrap;
-  margin: 20px;
+  margin: 0 20px;
   width: 90%;
   justify-content: space-between;
 `;
@@ -127,6 +178,7 @@ const SeatsExample = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
+  margin-bottom: 40px;
 
   div {
     background-color: red;
