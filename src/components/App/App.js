@@ -6,6 +6,7 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import BrowseMovies from "../BrowseMovies";
 import BrowseSessions from "../BrowseSessions";
 import BrowseSeats from "../BrowseSeats";
+import SuccessPage from "../SuccessPage";
 
 export default function App() {
   return (
@@ -17,6 +18,7 @@ export default function App() {
           <Route path="/" element={<BrowseMovies />} />
           <Route path="/sessoes/:idMovie" element={<BrowseSessions />} />
           <Route path="/assentos/:idSessao" element={<BrowseSeats />} />
+          <Route path="/sucesso" element={<SuccessPage />} />
         </Routes>
       </BrowserRouter>
     </>

@@ -10,8 +10,8 @@ export default function BrowseSeats() {
   let navigate = useNavigate();
 
   const [mainObj, setMainObj] = useState([]);
-
-  const [form, setForm] = useState({ name: "", cpf: "" });
+  let [ids, setIds] = useState([]);
+  let [form, setForm] = useState({ name: "", cpf: "" });
 
   useEffect(() => {
     let promisse = axios.get(
@@ -19,7 +19,7 @@ export default function BrowseSeats() {
     );
     promisse.then((res) => setMainObj(res.data));
   }, []);
-  // console.log(mainObj);
+  console.log(mainObj);
 
   function handleForm(e) {
     setForm({ ...form, [e.target.name]: e.target.value });
@@ -29,15 +29,24 @@ export default function BrowseSeats() {
 
   function reserveSeats(e) {
     e.preventDefault();
-    console.log(form);
-    form = { ...form, [ids]: ids };
-    console.log(form);
-    // navigate("/sucesso");
-  }
 
-  // let a = mainObj.seats.isAvailable.filter((value) => value == true);
-  // console.log(a);
-  let ids = [];
+    form = { ids: ids, ...form };
+
+    let promisse = axios.post(
+      "https://mock-api.driven.com.br/api/v5/cineflex/seats/book-many",
+      form
+    );
+    promisse.then(() => console.log("reservado"));
+
+    navigate("/sucesso", {
+      state: {
+        form,
+        time: mainObj.name,
+        title: mainObj.movie.title,
+        date: mainObj.day.date,
+      },
+    });
+  }
 
   return (
     <>
@@ -49,6 +58,7 @@ export default function BrowseSeats() {
                 key={seat.id}
                 index={seat.id}
                 isDisponivel={seat.isAvailable}
+                setIds={setIds}
                 ids={ids}
               >
                 {seat.name}

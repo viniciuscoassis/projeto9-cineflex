@@ -1,7 +1,7 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import styled from "styled-components";
 
-export default function Seat({ children, isDisponivel, index, ids }) {
+export default function Seat({ children, isDisponivel, index, setIds, ids }) {
   const [isSelected, setIsSelected] = useState(false);
 
   function handleClick(id) {
@@ -11,14 +11,15 @@ export default function Seat({ children, isDisponivel, index, ids }) {
     }
 
     if (isSelected === true) {
-      ids = ids.filter((value) => value !== id);
+      setIds(ids.filter((value) => value !== id));
       setIsSelected(false);
     } else if (isSelected === false) {
-      ids.push(id);
+      setIds([...ids, id]);
       setIsSelected(true);
     }
 
     console.log(ids);
+    console.log(isSelected);
   }
 
   return (
