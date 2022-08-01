@@ -131,6 +131,7 @@ const Form = styled.form`
   display: flex;
   flex-direction: column;
   margin: 0 25px;
+  margin-bottom: 110px;
 
   label {
     margin-top: 10px;
