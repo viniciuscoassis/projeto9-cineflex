@@ -13,7 +13,7 @@ function Movie({ posterURL, id }) {
   );
 }
 
-export default function BrowseMovies({}) {
+export default function BrowseMovies() {
   const [movies, setMovies] = useState([]);
 
   useEffect(() => {
