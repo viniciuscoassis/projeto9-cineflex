@@ -19,16 +19,21 @@ export default function BrowseSeats() {
     );
     promisse.then((res) => setMainObj(res.data));
   }, []);
-  console.log(mainObj);
 
   function handleForm(e) {
     setForm({ ...form, [e.target.name]: e.target.value });
-
-    // console.log(form);
   }
 
   function reserveSeats(e) {
     e.preventDefault();
+    let nameSeats;
+    {
+      nameSeats = mainObj.seats.filter((value) => {
+        for (let i = 0; i < ids.length; i++) {
+          if (value.id == ids[i]) return true;
+        }
+      });
+    }
 
     form = { ids: ids, ...form };
 
@@ -36,16 +41,17 @@ export default function BrowseSeats() {
       "https://mock-api.driven.com.br/api/v5/cineflex/seats/book-many",
       form
     );
-    promisse.then(() => console.log("reservado"));
-
-    navigate("/sucesso", {
-      state: {
-        form,
-        time: mainObj.name,
-        title: mainObj.movie.title,
-        date: mainObj.day.date,
-      },
-    });
+    promisse.then(() =>
+      navigate("/sucesso", {
+        state: {
+          form,
+          time: mainObj.name,
+          title: mainObj.movie.title,
+          date: mainObj.day.date,
+          nameSeats: nameSeats,
+        },
+      })
+    );
   }
 
   return (

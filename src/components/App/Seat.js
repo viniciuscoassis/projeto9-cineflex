@@ -17,9 +17,6 @@ export default function Seat({ children, isDisponivel, index, setIds, ids }) {
       setIds([...ids, id]);
       setIsSelected(true);
     }
-
-    console.log(ids);
-    console.log(isSelected);
   }
 
   return (
